@@ -1,0 +1,136 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0110D6D8 .scope module, "tb" "tb" 2 3;
+ .timescale 0 0;
+v0110B610_0 .var "oscIn", 0 0;
+v0110B668_0 .var "ps", 2 0;
+v0110B6C0_0 .var "psa", 0 0;
+v0110B718_0 .var "reset", 0 0;
+v0113DFD8_0 .var "t0cki", 0 0;
+v0113DDC8_0 .var "t0cs", 0 0;
+v0113E3F8_0 .net "t0if", 0 0, v011032F8_0; 1 drivers
+v0113E030_0 .var "t0se", 0 0;
+v0113E298_0 .net "tmr0out", 0 0, v0110B5B8_0; 1 drivers
+E_0110CE80 .event posedge, v01104FA0_0;
+S_0110D870 .scope module, "uut" "tmr0" 2 14, 3 1, S_0110D6D8;
+ .timescale 0 0;
+v01104EF0_0 .var "clk", 0 0;
+v01104F48_0 .var "clkout", 0 0;
+v01104FA0_0 .net "oscIn", 0 0, v0110B610_0; 1 drivers
+v0110EEB0_0 .var "prescaler", 7 0;
+v0110EF08_0 .net "ps", 2 0, v0110B668_0; 1 drivers
+v0110EF60_0 .net "psa", 0 0, v0110B6C0_0; 1 drivers
+v011031F0_0 .net "reset", 0 0, v0110B718_0; 1 drivers
+v01103248_0 .net "t0cki", 0 0, v0113DFD8_0; 1 drivers
+v011032A0_0 .net "t0cs", 0 0, v0113DDC8_0; 1 drivers
+v011032F8_0 .var "t0if", 0 0;
+v0110B560_0 .net "t0se", 0 0, v0113E030_0; 1 drivers
+v0110B5B8_0 .var "tmr0out", 0 0;
+E_0110CAE0 .event edge, v0110EF60_0, v01104EF0_0, v0110EF08_0, v0110EEB0_0;
+E_0110CB00 .event posedge, v01104EF0_0;
+E_0110CB40 .event edge, v011032A0_0, v01103248_0, v0110B560_0, v01104FA0_0;
+    .scope S_0110D870;
+T_0 ;
+    %wait E_0110CB40;
+    %load/v 8, v011032A0_0, 1;
+    %jmp/0xz  T_0.0, 8;
+    %load/v 8, v01103248_0, 1;
+    %load/v 9, v0110B560_0, 1;
+    %xor 8, 9, 1;
+    %set/v v01104EF0_0, 8, 1;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v01104FA0_0, 1;
+    %set/v v01104EF0_0, 8, 1;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_0110D870;
+T_1 ;
+    %wait E_0110CB00;
+    %load/v 8, v011031F0_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_1.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v0110EEB0_0, 0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/v 8, v0110EEB0_0, 8;
+    %cmpi/u 8, 255, 8;
+    %jmp/0xz  T_1.2, 4;
+    %ix/load 0, 8, 0;
+    %assign/v0 v0110EEB0_0, 0, 0;
+    %jmp T_1.3;
+T_1.2 ;
+    %load/v 8, v0110EEB0_0, 8;
+    %mov 16, 0, 24;
+    %addi 8, 1, 32;
+    %ix/load 0, 8, 0;
+    %assign/v0 v0110EEB0_0, 0, 8;
+T_1.3 ;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_0110D870;
+T_2 ;
+    %wait E_0110CAE0;
+    %load/v 8, v0110EF60_0, 1;
+    %jmp/0xz  T_2.0, 8;
+    %load/v 8, v01104EF0_0, 1;
+    %set/v v01104F48_0, 8, 1;
+    %jmp T_2.1;
+T_2.0 ;
+    %ix/getv 1, v0110EF08_0;
+    %jmp/1 T_2.2, 4;
+    %load/x1p 8, v0110EEB0_0, 1;
+    %jmp T_2.3;
+T_2.2 ;
+    %mov 8, 2, 1;
+T_2.3 ;
+; Save base=8 wid=1 in lookaside.
+    %set/v v01104F48_0, 8, 1;
+T_2.1 ;
+    %jmp T_2;
+    .thread T_2, $push;
+    .scope S_0110D6D8;
+T_3 ;
+    %delay 5, 0;
+    %load/v 8, v0110B610_0, 1;
+    %inv 8, 1;
+    %set/v v0110B610_0, 8, 1;
+    %jmp T_3;
+    .thread T_3;
+    .scope S_0110D6D8;
+T_4 ;
+    %vpi_call 2 29 "$dumpfile", "tb.vcd";
+    %vpi_call 2 30 "$dumpvars", 1'sb0, S_0110D6D8;
+    %set/v v0110B718_0, 0, 1;
+    %set/v v0110B610_0, 0, 1;
+    %set/v v0113DFD8_0, 0, 1;
+    %set/v v0113DDC8_0, 0, 1;
+    %set/v v0113E030_0, 0, 1;
+    %set/v v0110B6C0_0, 0, 1;
+    %movi 8, 1, 3;
+    %set/v v0110B668_0, 8, 3;
+    %delay 10, 0;
+    %set/v v0110B718_0, 1, 1;
+    %movi 8, 100, 8;
+T_4.0 %cmp/s 0, 8, 8;
+    %jmp/0xz T_4.1, 5;
+    %add 8, 1, 8;
+    %wait E_0110CE80;
+    %jmp T_4.0;
+T_4.1 ;
+    %vpi_call 2 42 "$finish";
+    %end;
+    .thread T_4;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb.v";
+    "./tmr0.v";
